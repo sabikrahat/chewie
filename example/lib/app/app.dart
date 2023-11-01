@@ -8,9 +8,9 @@ import 'package:video_player/video_player.dart';
 
 class ChewieDemo extends StatefulWidget {
   const ChewieDemo({
-    Key? key,
+    super.key,
     this.title = 'Chewie Demo',
-  }) : super(key: key);
+  });
 
   final String title;
 
@@ -116,7 +116,11 @@ class _ChewieDemoState extends State<ChewieDemo> {
       looping: true,
       progressIndicatorDelay:
           bufferDelay != null ? Duration(milliseconds: bufferDelay!) : null,
-
+      onExitFullScreenTap: () {
+        debugPrint('========================');
+        debugPrint('>> Exited full screen <<');
+        debugPrint('========================');
+      },
       additionalOptions: (context) {
         return <OptionItem>[
           OptionItem(
@@ -333,8 +337,7 @@ class _ChewieDemoState extends State<ChewieDemo> {
 }
 
 class DelaySlider extends StatefulWidget {
-  const DelaySlider({Key? key, required this.delay, required this.onSave})
-      : super(key: key);
+  const DelaySlider({super.key, required this.delay, required this.onSave});
 
   final int? delay;
   final void Function(int?) onSave;

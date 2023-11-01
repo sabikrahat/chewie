@@ -25,9 +25,9 @@ typedef ChewieRoutePageBuilder = Widget Function(
 /// make it easy to use!
 class Chewie extends StatefulWidget {
   const Chewie({
-    Key? key,
+    super.key,
     required this.controller,
-  }) : super(key: key);
+  });
 
   /// The [ChewieController]
   final ChewieController controller;
@@ -285,6 +285,7 @@ class ChewieController extends ChangeNotifier {
     this.progressIndicatorDelay,
     this.hideControlsTimer = defaultHideControlsTimer,
     this.controlsSafeAreaMinimum = EdgeInsets.zero,
+    this.onExitFullScreenTap,
   }) : assert(
           playbackSpeeds.every((speed) => speed > 0),
           'The playbackSpeeds values must all be greater than 0',
@@ -332,6 +333,7 @@ class ChewieController extends ChangeNotifier {
     List<SystemUiOverlay>? systemOverlaysAfterFullScreen,
     List<DeviceOrientation>? deviceOrientationsAfterFullScreen,
     Duration? progressIndicatorDelay,
+    Function()? onExitFullScreenTap,
     Widget Function(
       BuildContext,
       Animation<double>,
@@ -387,6 +389,7 @@ class ChewieController extends ChangeNotifier {
       hideControlsTimer: hideControlsTimer ?? this.hideControlsTimer,
       progressIndicatorDelay:
           progressIndicatorDelay ?? this.progressIndicatorDelay,
+      onExitFullScreenTap: onExitFullScreenTap ?? this.onExitFullScreenTap,
     );
   }
 
@@ -536,6 +539,9 @@ class ChewieController extends ChangeNotifier {
   /// Defaults to [EdgeInsets.zero].
   final EdgeInsets controlsSafeAreaMinimum;
 
+  /// On Exit FullScreen this will be called
+  final void Function()? onExitFullScreenTap;
+
   static ChewieController of(BuildContext context) {
     final chewieControllerProvider =
         context.dependOnInheritedWidgetOfExactType<ChewieControllerProvider>()!;
@@ -587,6 +593,7 @@ class ChewieController extends ChangeNotifier {
   }
 
   void exitFullScreen() {
+    onExitFullScreenTap?.call();
     _isFullScreen = false;
     notifyListeners();
   }
@@ -628,10 +635,10 @@ class ChewieController extends ChangeNotifier {
 
 class ChewieControllerProvider extends InheritedWidget {
   const ChewieControllerProvider({
-    Key? key,
+    super.key,
     required this.controller,
-    required Widget child,
-  }) : super(key: key, child: child);
+    required super.child,
+  });
 
   final ChewieController controller;
 
