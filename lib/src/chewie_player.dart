@@ -593,12 +593,12 @@ class ChewieController extends ChangeNotifier {
   }
 
   void exitFullScreen() {
-    onExitFullScreenTap?.call();
     _isFullScreen = false;
     notifyListeners();
   }
 
   void toggleFullScreen() {
+    if (_isFullScreen) onExitFullScreenTap?.call();
     _isFullScreen = !_isFullScreen;
     notifyListeners();
   }
