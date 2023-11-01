@@ -338,7 +338,12 @@ class _MaterialControlsState extends State<MaterialControls>
 
   GestureDetector _buildExpandButton() {
     return GestureDetector(
-      onTap: _onExpandCollapse,
+      onTap: (){
+        if(chewieController.isFullScreen){
+        chewieController.onExitFullScreenTap?.call();
+        }
+        _onExpandCollapse.call();
+      },
       child: AnimatedOpacity(
         opacity: notifier.hideStuff ? 0.0 : 1.0,
         duration: const Duration(milliseconds: 300),
